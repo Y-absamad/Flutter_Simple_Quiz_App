@@ -1,6 +1,13 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
+import 'package:flutter_simple_quiz_app/alertHelper.dart';
+import 'package:flutter_simple_quiz_app/answerChecker.dart';
+import 'package:flutter_simple_quiz_app/answerFeedbackManager.dart';
+import 'package:flutter_simple_quiz_app/questionDisplay.dart';
 import 'package:flutter_simple_quiz_app/questionManager%20.dart';
 import 'package:flutter_simple_quiz_app/questionRepository.dart';
+import 'package:flutter_simple_quiz_app/quizButton.dart';
+
 
 class Exampage extends StatefulWidget {
   const Exampage({super.key});
@@ -10,65 +17,53 @@ class Exampage extends StatefulWidget {
 }
 
 class _ExampageState extends State<Exampage> {
+  final QuestionRepository questionRepository = QuestionRepository();
   late final QuestionManager questionManager;
-  late final QuestionRepository questionRepository;
+  late final Answerchecker answerChecker;
+  final Answerfeedbackmanager answerfeedback = Answerfeedbackmanager();
+  int score = 0;
 
-  List<Padding> anserList = [];
-  int rightAnswer = 0;
+  @override
+  void initState() {
+    super.initState();
+    questionManager = QuestionManager(questionRepository);
+    answerChecker = Answerchecker(questionManager);
+  }
 
-  void checkAnswer(bool whatUserpicked) {
-    bool correctAnswer = appBrain.answer;
+  void handleAnswer(bool userpicked) {
     setState(() {
-      if (whatUserpicked == correctAnswer) {
-        rightAnswer++;
-        anserList.add(
-          const Padding(
-            padding: EdgeInsets.all(5),
-            child: Icon(
-              Icons.thumb_up,
-              color: Colors.green,
-            ),
-          ),
-        );
-      } else {
-        anserList.add(
-          const Padding(
-            padding: EdgeInsets.all(5),
-            child: Icon(
-              Icons.thumb_down,
-              color: Colors.red,
-            ),
-          ),
-        );
+      bool isCorrect = answerChecker.checkAnswer(userpicked);
+      answerfeedback.addIcon(isCorrect);
+
+      if (isCorrect) {
+        score++;
+        questionManager.incrementScore();
       }
-      if (appBrain.isFinished()) {
-        Alert(
-          context: context,
-          //type: AlertType.error,
-          title: "Finished Questions",
-          desc: "you answered in $rightAnswer from 4",
-          buttons: [
-            DialogButton(
-              onPressed: () => Navigator.pop(context),
-              width: 120,
-              child: const Text(
-                "Start agin",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-            )
-          ],
-        ).show();
-      appBrain.reset();  
-      anserList = [];
-      rightAnswer = 0;
-      } else {
-        appBrain.nextQusetion();
-      }
+
+      if (!questionManager.isFinished()) {
+        questionManager.nextQusetion();
+      }else{
+        Alerthelper.showAlert(context, questionManager.score);
+        questionManager.reset();
+        answerfeedback.resetFeedback();
+      } 
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
-}
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(children: answerfeedback.answersResult),
+        QuestionDisplay(questionManager: questionManager),
+        Expanded(
+          child: Quizbutton(text: 'True', backgroundColor: Colors.green, onPressed: () => handleAnswer(true)),
+        ),
+        Expanded(
+          child:Quizbutton(text: 'False', backgroundColor: Colors.red, onPressed: () => handleAnswer(false))
+        ),
+      ],
+    );
+  }
 }

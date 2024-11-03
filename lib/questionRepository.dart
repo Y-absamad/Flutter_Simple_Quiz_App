@@ -2,7 +2,6 @@ import 'package:flutter_simple_quiz_app/question.dart';
 
 class QuestionRepository {
   
-  
   final List<Question> qusetions = [
     Question(
       text: 'yousefsdfdsf',
@@ -27,4 +26,6 @@ class QuestionRepository {
   ];
   
   Question getQuestion(int index) => qusetions[index];
+
+  int totalQuestions() => qusetions.length;
 }
