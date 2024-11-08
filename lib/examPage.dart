@@ -1,13 +1,10 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_quiz_app/alertHelper.dart';
-import 'package:flutter_simple_quiz_app/answerChecker.dart';
 import 'package:flutter_simple_quiz_app/answerFeedbackManager.dart';
 import 'package:flutter_simple_quiz_app/questionDisplay.dart';
 import 'package:flutter_simple_quiz_app/questionManager%20.dart';
 import 'package:flutter_simple_quiz_app/questionRepository.dart';
 import 'package:flutter_simple_quiz_app/quizButton.dart';
-
 
 class Exampage extends StatefulWidget {
   const Exampage({super.key});
@@ -19,51 +16,66 @@ class Exampage extends StatefulWidget {
 class _ExampageState extends State<Exampage> {
   final QuestionRepository questionRepository = QuestionRepository();
   late final QuestionManager questionManager;
-  late final Answerchecker answerChecker;
-  final Answerfeedbackmanager answerfeedback = Answerfeedbackmanager();
-  int score = 0;
+  late final Answerfeedbackmanager answerfeedbackmanager;
 
   @override
   void initState() {
     super.initState();
     questionManager = QuestionManager(questionRepository);
-    answerChecker = Answerchecker(questionManager);
+    answerfeedbackmanager = Answerfeedbackmanager(
+        context: context, questionManager: questionManager);
   }
 
   void handleAnswer(bool userpicked) {
     setState(() {
-      bool isCorrect = answerChecker.checkAnswer(userpicked);
-      answerfeedback.addIcon(isCorrect);
-
+      bool isCorrect = questionManager.checkAnswer(userpicked);
+      
       if (isCorrect) {
-        score++;
         questionManager.incrementScore();
       }
 
-      if (!questionManager.isFinished()) {
-        questionManager.nextQusetion();
-      }else{
-        Alerthelper.showAlert(context, questionManager.score);
-        questionManager.reset();
-        answerfeedback.resetFeedback();
-      } 
+      if (questionManager.isFinished()) {
+        answerfeedbackmanager.showEndDialog(isCorrect,() {
+          setState(() {
+            questionManager.reset();
+          });
+        });
+      }
+
+      answerfeedbackmanager.showAnswerFeedbackDialog(isCorrect, (){
+        setState(() {
+          if(!questionManager.isLastQusetion()){
+            questionManager.nextQusetion();
+          }
+        });
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(children: answerfeedback.answersResult),
-        QuestionDisplay(questionManager: questionManager),
-        Expanded(
-          child: Quizbutton(text: 'True', backgroundColor: Colors.green, onPressed: () => handleAnswer(true)),
-        ),
-        Expanded(
-          child:Quizbutton(text: 'False', backgroundColor: Colors.red, onPressed: () => handleAnswer(false))
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          QuestionDisplay(questionManager: questionManager),
+          Expanded(
+            child: Quizbutton(
+              text: 'True',
+              backgroundColor: Colors.green,
+              onPressed: () => handleAnswer(true),
+            ),
+          ),
+          Expanded(
+            child: Quizbutton(
+              text: 'False',
+              backgroundColor: Colors.red,
+              onPressed: () => handleAnswer(false),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

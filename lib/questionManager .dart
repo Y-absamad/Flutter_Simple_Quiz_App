@@ -1,6 +1,5 @@
 import 'package:flutter_simple_quiz_app/questionRepository.dart';
 
-
 class QuestionManager {
   int _currentQusetionIndex = 0;
   int _score = 0;
@@ -20,9 +19,11 @@ class QuestionManager {
   void incrementScore() => _score++;
 
   bool isFinished() =>
-      _currentQusetionIndex >= _questionRepository.totalQuestions() - 1;
+      _currentQusetionIndex == _questionRepository.totalQuestions - 1;
 
   int get score => _score;
+
+  int get currentQusetionIndex => _currentQusetionIndex;
 
   void reset() {
     _currentQusetionIndex = 0;
@@ -30,4 +31,12 @@ class QuestionManager {
   }
 
   void nextQusetion() => _currentQusetionIndex++;
+
+  bool isLastQusetion() {
+    return _questionRepository.totalQuestions == _currentQusetionIndex + 1;
+  }
+
+  bool checkAnswer(bool userPicked) {
+    return userPicked == answer;
+  }
 }
