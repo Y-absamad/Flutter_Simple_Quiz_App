@@ -9,14 +9,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: const Text(
         'Quiz App',
         style: TextStyle(
-          fontSize: 30,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-          fontFamily: 'Myfont'
-        ),
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
+            fontFamily: 'Myfont1'),
       ),
       centerTitle: true,
       backgroundColor: const Color.fromARGB(153, 17, 63, 122),
+      iconTheme: const IconThemeData(
+        color: Colors.white,
+      ),
     );
   }
 

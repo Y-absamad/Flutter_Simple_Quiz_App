@@ -14,6 +14,7 @@ class DialogHelper {
       barrierDismissible: false,
       builder: (BuildContext content) {
         return AlertDialog(
+          titlePadding: const EdgeInsets.only(top: 55),
           backgroundColor: backgroundColor,
           title: Text(
             title,

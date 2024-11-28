@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_simple_quiz_app/app_bar.dart';
+import 'package:flutter_simple_quiz_app/welcome_page.dart';
 
 import 'examPage.dart';
 
@@ -12,14 +12,13 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: SafeArea(
-        child: Scaffold(
-          backgroundColor: Color.fromARGB(255, 3, 31, 39),
-          appBar: CustomAppBar(),
-          body: Exampage(),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/welcome',
+      routes: {
+        '/welcome': (context) => const WelcomePage(),
+        '/examPage': (context) => const Exampage(),
+      },
     );
   }
 }

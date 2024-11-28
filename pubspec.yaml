@@ -78,10 +78,10 @@ flutter:
   fonts:
     - family: Myfont
       fonts:
-        - asset: fonts/LibreBaskerville-Bold.ttf
+        - asset: fonts/RobotoSlab-Medium.ttf
     - family: Myfont1
       fonts:
-        - asset: fonts/NotoSans-VariableFont_wdth,wght.ttf
+        - asset: fonts/LibreBaskerville-Bold.ttf
    
   
   # For details regarding fonts from package dependencies,

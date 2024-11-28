@@ -1,6 +1,7 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:flutter_simple_quiz_app/answerFeedbackManager.dart';
+import 'package:flutter_simple_quiz_app/app_bar.dart';
 import 'package:flutter_simple_quiz_app/questionDisplay.dart';
 import 'package:flutter_simple_quiz_app/questionManager%20.dart';
 import 'package:flutter_simple_quiz_app/questionRepository.dart';
@@ -29,22 +30,23 @@ class _ExampageState extends State<Exampage> {
   void handleAnswer(bool userpicked) {
     setState(() {
       bool isCorrect = questionManager.checkAnswer(userpicked);
-      
+
       if (isCorrect) {
         questionManager.incrementScore();
       }
 
       if (questionManager.isFinished()) {
-        answerfeedbackmanager.showEndDialog(isCorrect,() {
+        answerfeedbackmanager.showEndDialog(() {
           setState(() {
             questionManager.reset();
           });
         });
       }
+      
 
-      answerfeedbackmanager.showAnswerFeedbackDialog(isCorrect, (){
+      answerfeedbackmanager.showAnswerFeedbackDialog(isCorrect, () {
         setState(() {
-          if(!questionManager.isLastQusetion()){
+          if (!questionManager.isLastQusetion()) {
             questionManager.nextQusetion();
           }
         });
@@ -54,27 +56,32 @@ class _ExampageState extends State<Exampage> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          QuestionDisplay(questionManager: questionManager),
-          Expanded(
-            child: Quizbutton(
-              text: 'True',
-              backgroundColor: Colors.green,
-              onPressed: () => handleAnswer(true),
-            ),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: const Color.fromARGB(184, 11, 44, 97),
+        appBar: const CustomAppBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              QuestionDisplay(questionManager: questionManager),
+              Quizbutton(
+                text: 'True',
+                fontSize: 33,
+                backgroundColor: Colors.green,
+                onPressed: () => handleAnswer(true),
+              ),
+              const SizedBox(height: 20),
+              Quizbutton(
+                text: 'False',
+                fontSize: 33,
+                backgroundColor: Colors.red,
+                onPressed: () => handleAnswer(false),
+              ),
+            ],
           ),
-          Expanded(
-            child: Quizbutton(
-              text: 'False',
-              backgroundColor: Colors.red,
-              onPressed: () => handleAnswer(false),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

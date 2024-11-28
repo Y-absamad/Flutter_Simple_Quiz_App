@@ -29,9 +29,9 @@ class QuestionDisplay extends StatelessWidget {
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 22,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w200,
               color: Colors.white,
-              fontFamily: 'Myfont1',
+              fontFamily: 'Myfont',
             ),
           ),
         ],

@@ -1,16 +1,12 @@
-# flutter_simple_quiz_app
+# Flutter Simple Quiz App Ture/False
+This is a simple quiz app built with Flutter. It allows users to answer true or false questions and provides feedback on their answers.
 
-A new Flutter project.
+## Features:
 
-## Getting Started
+- Loads questions from a repository.
+- Manages the quiz state, including score and current question.
+- Provides feedback to the user after each answer.
+- Displays the final score after the quiz is complete.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Video
+![](video1.gif)

@@ -8,13 +8,13 @@ class Answerfeedbackmanager {
 
   Answerfeedbackmanager({required this.context, required this.questionManager});
 
-  void showEndDialog(bool isCorrect, VoidCallback onReset) {
+  void showEndDialog(VoidCallback onReset) {
     DialogHelper.showCustomDialog(
       context: context,
       title: 'The Quiz is Over',
       textChild: 'Retry',
       contentt: 'You answered ${questionManager.score} questions correctly',
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.grey,
       onPressed: () {
         Navigator.of(context).pop();
         onReset();
@@ -25,7 +25,7 @@ class Answerfeedbackmanager {
   void showAnswerFeedbackDialog(bool isCorrect, VoidCallback onNext) {
     String title = isCorrect
         ? 'Well done! Your answer is correct.'
-        : 'Unfortunately, your answer is incorrect.';
+        : 'Sorry, your answer is incorrect.';
     String textChild = 'Next';
 
     DialogHelper.showCustomDialog(
